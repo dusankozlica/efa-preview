@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Evolution Football Academy Basel — Fussballtraining für alle Altersgruppen. Einzeltraining, Kleingruppen, Kinder und Premium Coaching." />
+<title>Evolution Football Academy · Basel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?build=2026051324" />
+</head>
+<body>
+
+<!-- ============================================
+     PROBETRAINING WIZARD MODAL
+     ============================================ -->
+<div class="probe" id="probe" aria-hidden="true" role="dialog" aria-labelledby="probe-title">
+  <div class="probe__backdrop" data-probe-close></div>
+  <div class="probe__panel">
+    <button class="probe__close" data-probe-close aria-label="Schliessen">×</button>
+
+    <!-- Progress -->
+    <div class="probe__progress" aria-hidden="true">
+      <i class="probe__progress-dot is-active" data-step="1"></i>
+      <i class="probe__progress-dot" data-step="2"></i>
+      <i class="probe__progress-dot" data-step="3"></i>
+      <i class="probe__progress-dot" data-step="4"></i>
+    </div>
+
+    <header class="probe__head">
+      <span class="probe__step-label">Schritt <b id="probe-cur">1</b> / 4</span>
+      <h3 class="probe__heading" id="probe-title">Lass uns dich kennenlernen.</h3>
+    </header>
+
+    <!-- STEP 1: Alter -->
+    <section class="probe__step is-active" data-step="1">
+      <p class="probe__q">Wie alt bist du?</p>
+      <div class="probe__chips" data-field="age">
+        <button class="probe__chip" data-val="4-6">4–6 Jahre</button>
+        <button class="probe__chip" data-val="7-10">7–10 Jahre</button>
+        <button class="probe__chip" data-val="11-13">11–13 Jahre</button>
+        <button class="probe__chip" data-val="14-17">14–17 Jahre</button>
+        <button class="probe__chip" data-val="18+">18+ Jahre</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: Position -->
+    <section class="probe__step" data-step="2">
+      <p class="probe__q">Welche Position spielst du am liebsten?</p>
+      <div class="probe__chips probe__chips--big" data-field="position">
+        <button class="probe__chip" data-val="torwart"><span class="probe__chip-ico">🥅</span>Torwart</button>
+        <button class="probe__chip" data-val="verteidiger"><span class="probe__chip-ico">🛡</span>Verteidiger</button>
+        <button class="probe__chip" data-val="mittelfeld"><span class="probe__chip-ico">⚡</span>Mittelfeld</button>
+        <button class="probe__chip" data-val="stuermer"><span class="probe__chip-ico">🎯</span>Stürmer</button>
+        <button class="probe__chip" data-val="alles"><span class="probe__chip-ico">🤔</span>Mal sehen</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: Datum + Uhrzeit -->
+    <section class="probe__step" data-step="3">
+      <p class="probe__q">Wann passt es dir?</p>
+      <span class="probe__hint">Wähle einen Tag — die Uhrzeit erscheint danach.</span>
+      <div class="probe__dates" id="probe-dates" data-field="date"></div>
+      <div class="probe__times" id="probe-times" data-field="time" hidden>
+        <button class="probe__chip" data-val="16:00">16:00</button>
+        <button class="probe__chip" data-val="17:00">17:00</button>
+        <button class="probe__chip" data-val="18:00">18:00</button>
+        <button class="probe__chip" data-val="19:00">19:00</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: Kontaktdaten -->
+    <section class="probe__step" data-step="4">
+      <p class="probe__q">Wie erreichen wir dich?</p>
+      <div class="probe__form">
+        <label class="probe__field">
+          <span>Vor- und Nachname</span>
+          <input type="text" id="probe-name" placeholder="Max Mustermann" autocomplete="name" />
+        </label>
+        <label class="probe__field">
+          <span>E-Mail</span>
+          <input type="email" id="probe-email" placeholder="max@example.com" autocomplete="email" />
+        </label>
+        <label class="probe__field">
+          <span>Telefon (optional)</span>
+          <input type="tel" id="probe-phone" placeholder="+41 79 ..." autocomplete="tel" />
+        </label>
+        <label class="probe__field">
+          <span>Nachricht (optional)</span>
+          <textarea id="probe-note" rows="2" placeholder="Verein, Erfahrung, sonstiges..."></textarea>
+        </label>
+      </div>
+    </section>
+
+    <!-- DONE -->
+    <section class="probe__step probe__step--done" data-step="done">
+      <div class="probe__done-icon">✓</div>
+      <h4 class="probe__done-title">Wir freuen uns auf dich!</h4>
+      <p class="probe__done-msg">Wir melden uns innerhalb 24 Stunden mit der Bestätigung. Bring bequeme Kleidung & Schienbeinschoner mit.</p>
+      <a href="#" class="probe__done-close" data-probe-close>Schliessen</a>
+    </section>
+
+    <!-- Nav -->
+    <footer class="probe__nav">
+      <button class="probe__btn probe__btn--ghost" id="probe-back" disabled>← Zurück</button>
+      <button class="probe__btn probe__btn--cta" id="probe-next" disabled>Weiter →</button>
+    </footer>
+  </div>
+</div>
+
+<!-- Floating camp popup (sticky bottom-right) -->
+<aside class="campop" id="campop" aria-label="Sommercamp 2026 — Hinweis">
+  <button class="campop__close" id="campop-close" aria-label="Hinweis schliessen">×</button>
+  <span class="campop__kicker"><i class="campop__dot"></i>Sommercamp · Anmeldung offen</span>
+  <h4 class="campop__title">Camp <em>2026</em></h4>
+  <span class="campop__date">27. Jul — 31. Jul · Pfaffenholz Basel</span>
+  <div class="campop__countdown">
+    <div><b id="cp-d">00</b><span>Tage</span></div>
+    <div><b id="cp-h">00</b><span>Stunden</span></div>
+    <div><b id="cp-m">00</b><span>Minuten</span></div>
+  </div>
+  <div class="campop__actions">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc7J3fOqueBBsLpk37ylwI5lMCgsoIdxyXBNEdfvxx11bJYXA/viewform" target="_blank" rel="noopener noreferrer" class="campop__cta">Anmelden →</a>
+    <a href="#camp" class="campop__more">Mehr</a>
+  </div>
+</aside>
+
+<!-- Mini-Bubble Re-Opener: kompakter Card-Style, erscheint wenn Popup zu -->
+<button class="campop-bubble" id="campop-bubble" aria-label="Sommercamp-Hinweis wieder einblenden" hidden>
+  <span class="campop-bubble__kicker"><i></i>Sommercamp</span>
+  <span class="campop-bubble__title">Camp <em>2026</em></span>
+  <span class="campop-bubble__meta">Noch <b id="cpb-days">--</b> Tage · Klick für Details</span>
+</button>
+
+<!-- Custom football cursor -->
+<div class="cursor" aria-hidden="true">
+  <svg viewBox="0 0 40 40" preserveAspectRatio="xMidYMid meet">
+    <!-- Filled disc (only visible in default small state) -->
+    <circle class="cursor__disc" cx="20" cy="20" r="19" />
+    <!-- Outline + football lines (visible when grown) -->
+    <g class="cursor__lines" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke">
+      <circle cx="20" cy="20" r="19" />
+      <polygon points="20,11.5 27.2,16.7 24.4,25 15.6,25 12.8,16.7" />
+      <line x1="20" y1="11.5" x2="20" y2="2.5" />
+      <line x1="27.2" y1="16.7" x2="35.8" y2="13.9" />
+      <line x1="24.4" y1="25" x2="29.7" y2="32.4" />
+      <line x1="15.6" y1="25" x2="10.3" y2="32.4" />
+      <line x1="12.8" y1="16.7" x2="4.2" y2="13.9" />
+    </g>
+  </svg>
+</div>
+
+<!-- TOP BAR -->
+<header class="bar" id="bar">
+  <a href="#top" class="brand" id="brand" aria-label="Evolution Football Academy">
+    <img class="brand__img" src="logo.svg?v=2" alt="Evolution Football Academy" />
+  </a>
+  <nav class="bar__nav">
+    <a href="#leistungen">Leistungen</a>
+    <a href="#preise">Preise</a>
+    <a href="#camp">Sommercamp</a>
+    <a href="#team">Team</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <button type="button" class="bar__cta" id="open-probe" data-open-probe>
+    <span>Probetraining</span>
+    <i>→</i>
+  </button>
+  <button class="bar__burger" id="burger" aria-label="Menü"><span></span><span></span></button>
+</header>
+
+<!-- HERO — Video + centered big title -->
+<section class="hero" id="top">
+  <video class="hero__video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=2000&q=80">
+    <source src="https://videos.pexels.com/video-files/6079613/6079613-hd_1920_1080_25fps.mp4" type="video/mp4">
+  </video>
+  <div class="hero__shade"></div>
+
+  <div class="hero__center">
+    <span class="hero__eyebrow">— Football Academy · Basel · seit 2014 —</span>
+    <h1 class="hero__title">
+      <span class="line"><span class="word">BESSER</span></span>
+      <span class="line"><span class="word hero__title--accent">SPIELEN.</span></span>
+    </h1>
+    <p class="hero__tag">Coaching · Technik · Taktik · Athletik.<br/><em>Deine Fussballakademie in Basel.</em></p>
+  </div>
+
+  <div class="hero__bottom">
+    <a href="#leistungen" class="hero__scroll">
+      <span>Scrollen</span>
+      <span class="hero__scroll-line"></span>
+    </a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="strip">
+  <div class="strip__track">
+    <span>TECHNIK</span><i>✦</i>
+    <span>TAKTIK</span><i>✦</i>
+    <span>ATHLETIK</span><i>✦</i>
+    <span>SPIELINTELLIGENZ</span><i>✦</i>
+    <span>MENTALITÄT</span><i>✦</i>
+    <span>DISZIPLIN</span><i>✦</i>
+    <span>TECHNIK</span><i>✦</i>
+    <span>TAKTIK</span><i>✦</i>
+    <span>ATHLETIK</span><i>✦</i>
+    <span>SPIELINTELLIGENZ</span><i>✦</i>
+    <span>MENTALITÄT</span><i>✦</i>
+    <span>DISZIPLIN</span><i>✦</i>
+  </div>
+</div>
+
+<!-- LEISTUNGEN — full-width accordion bars -->
+<section class="leistungen" id="leistungen">
+  <header class="leistungen__head">
+    <span class="eyebrow">— Leistungen / 01</span>
+    <h2>VIER WEGE,<br/>DEIN <em>SPIEL</em> ZU ENTWICKELN.</h2>
+    <p>Klicke auf einen Balken um Details zu sehen.</p>
+  </header>
+
+  <div class="acc" id="acc">
+
+    <article class="acc__row" data-open="true">
+      <button class="acc__head" aria-expanded="true">
+        <span class="acc__num">01</span>
+        <h3 class="acc__title">EINZELTRAINING</h3>
+        <span class="acc__hint">Eins-zu-eins</span>
+        <span class="acc__icon" aria-hidden="true"></span>
+      </button>
+      <div class="acc__body">
+        <div class="acc__body-inner">
+          <div class="acc__copy">
+            <p>1-zu-1 Coaching mit personalisiertem Trainingsplan. Für Amateure und Profis, die gezielt an Schwächen arbeiten und Stärken ausbauen wollen.</p>
+            <ul>
+              <li>Persönlicher Trainingsplan</li>
+              <li>Technik- &amp; Videoanalyse</li>
+              <li>Flexible Terminierung</li>
+            </ul>
+            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
+          </div>
+          <div class="acc__media">
+            <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acc__row">
+      <button class="acc__head" aria-expanded="false">
+        <span class="acc__num">02</span>
+        <h3 class="acc__title">KLEINGRUPPE</h3>
+        <span class="acc__hint">2–6 Spieler</span>
+        <span class="acc__icon" aria-hidden="true"></span>
+      </button>
+      <div class="acc__body">
+        <div class="acc__body-inner">
+          <div class="acc__copy">
+            <p>Die ideale Balance zwischen individuellem Coaching und Mannschaftsspiel. Kleine Gruppen, hohe Intensität, echte Spielsituationen.</p>
+            <ul>
+              <li>2 bis 6 Spieler pro Gruppe</li>
+              <li>Spielsituationen &amp; Taktik</li>
+              <li>Mental- &amp; Athletiktraining</li>
+            </ul>
+            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
+          </div>
+          <div class="acc__media">
+            <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acc__row acc__row--feature">
+      <button class="acc__head" aria-expanded="false">
+        <span class="acc__num">03</span>
+        <h3 class="acc__title">KINDER GRUPPE</h3>
+        <span class="acc__hint">4 – 10+ Jahre · Beliebtestes Angebot</span>
+        <span class="acc__icon" aria-hidden="true"></span>
+      </button>
+      <div class="acc__body">
+        <div class="acc__body-inner">
+          <div class="acc__copy">
+            <p><em>„Kleine Füsse, grosse Träume."</em> Spielerisches Training, das Begeisterung weckt, Grundlagen legt und Kinder mit Freude zum Sport bringt.</p>
+            <ul>
+              <li>Mittwoch · 16:15 Uhr</li>
+              <li>Samstag · 09:45 Uhr</li>
+              <li>Sportzentrum Pfaffenholz, Basel</li>
+            </ul>
+            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
+          </div>
+          <div class="acc__media">
+            <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acc__row">
+      <button class="acc__head" aria-expanded="false">
+        <span class="acc__num">04</span>
+        <h3 class="acc__title">PREMIUM</h3>
+        <span class="acc__hint">Pro Coaching</span>
+        <span class="acc__icon" aria-hidden="true"></span>
+      </button>
+      <div class="acc__body">
+        <div class="acc__body-inner">
+          <div class="acc__copy">
+            <p>Für Spieler mit professionellen Ambitionen. Komplette, langfristige Betreuung mit individuellem Plan, Taktik- und Videoanalyse, persönlichem Coaching.</p>
+            <ul>
+              <li>Individueller Trainingsplan</li>
+              <li>Taktik- &amp; Videoanalyse</li>
+              <li>Persönliches 1:1 Coaching</li>
+            </ul>
+            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
+          </div>
+          <div class="acc__media">
+            <img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- PREISE -->
+<section class="preise" id="preise">
+  <header class="preise__head">
+    <span class="eyebrow">— Preise / 02</span>
+    <h2>TARIFE &amp; <em>PAKETE.</em></h2>
+    <p>Transparente Preise — alle Beträge in Schweizer Franken. <strong>Gratis Probetraining</strong> auf Anfrage. <strong>20 % Geschwisterrabatt</strong>.</p>
+  </header>
+
+  <!-- Block 1: Kinder Gruppe -->
+  <div class="preise__block">
+    <div class="preise__block-head">
+      <span class="preise__tag">— Kinder Gruppentraining</span>
+      <h3>Monats-Abo</h3>
+      <p>Zwei Altersgruppen · Mittwoch &amp; Samstag · Sportzentrum Pfaffenholz</p>
+    </div>
+
+    <div class="prtable">
+      <div class="prtable__row prtable__row--head">
+        <div class="prtable__cell"></div>
+        <div class="prtable__cell">3-Monats-Abo<br/><span>1 × pro Woche</span></div>
+        <div class="prtable__cell">3-Monats-Abo<br/><span>2 × pro Woche</span></div>
+        <div class="prtable__cell prtable__cell--best">6-Monats-Abo<br/><span>1 × pro Woche</span></div>
+        <div class="prtable__cell prtable__cell--best">6-Monats-Abo<br/><span>2 × pro Woche</span></div>
+      </div>
+      <div class="prtable__row">
+        <div class="prtable__cell prtable__cell--label">
+          <b>4 – 6 Jahre</b>
+          <span>Mini-Kicker</span>
+        </div>
+        <div class="prtable__cell"><b>CHF 76.–</b><span>/ Monat</span></div>
+        <div class="prtable__cell"><b>CHF 95.–</b><span>/ Monat</span></div>
+        <div class="prtable__cell prtable__cell--best"><b>CHF 68.–</b><span>/ Monat</span></div>
+        <div class="prtable__cell prtable__cell--best"><b>CHF 85.–</b><span>/ Monat</span></div>
+      </div>
+      <div class="prtable__row">
+        <div class="prtable__cell prtable__cell--label">
+          <b>7 – 13 Jahre</b>
+          <span>Junior Squad</span>
+        </div>
+        <div class="prtable__cell"><b>CHF 104.–</b><span>/ Monat</span></div>
+        <div class="prtable__cell"><b>CHF 130.–</b><span>/ Monat</span></div>
+        <div class="prtable__cell prtable__cell--best"><b>CHF 92.–</b><span>/ Monat</span></div>
+        <div class="prtable__cell prtable__cell--best"><b>CHF 115.–</b><span>/ Monat</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block 2: Spezifische Trainings -->
+  <div class="preise__block">
+    <div class="preise__block-head">
+      <span class="preise__tag">— Spezifische Trainings</span>
+      <h3>Einzeln &amp; Klein­gruppe</h3>
+      <p>Eins-zu-eins Coaching, Training zu zweit oder in kleinen Gruppen — flexibel buchbar.</p>
+    </div>
+
+    <div class="prcards">
+      <article class="prcard">
+        <span class="prcard__tag">Einzeltraining</span>
+        <div class="prcard__price">
+          <span>CHF</span>
+          <b>95.–</b>
+          <em>/ 60 Min</em>
+        </div>
+        <ul>
+          <li>1-zu-1 Coaching</li>
+          <li>Persönlicher Trainingsplan</li>
+          <li>Video- &amp; Technikanalyse</li>
+        </ul>
+      </article>
+
+      <article class="prcard prcard--feature">
+        <span class="prcard__tag">10er Paket</span>
+        <div class="prcard__price">
+          <span>CHF</span>
+          <b>850.–</b>
+          <em>10 × 60 Min</em>
+        </div>
+        <ul>
+          <li>10 Einzeltrainings</li>
+          <li>Sparpreis · spart CHF 100.–</li>
+          <li>Flexibel terminierbar</li>
+        </ul>
+        <span class="prcard__badge">Beliebteste Option</span>
+      </article>
+
+      <article class="prcard">
+        <span class="prcard__tag">Training zu zweit</span>
+        <div class="prcard__price">
+          <span>CHF</span>
+          <b>75.–</b>
+          <em>/ Person · Std</em>
+        </div>
+        <ul>
+          <li>Zu zweit trainieren</li>
+          <li>Spielsituationen 1:1</li>
+          <li>Geteilte Kosten</li>
+        </ul>
+      </article>
+
+      <article class="prcard">
+        <span class="prcard__tag">Kleingruppe</span>
+        <div class="prcard__price">
+          <span>CHF</span>
+          <b>65.–</b>
+          <em>/ Person · Std</em>
+        </div>
+        <ul>
+          <li>Ab 3 Personen</li>
+          <li>Taktik &amp; Spielsituationen</li>
+          <li>Mentaltraining</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="preise__notes">
+      <div>
+        <b>20 %</b>
+        <span>Geschwister­rabatt auf das zweite Kind</span>
+      </div>
+      <div>
+        <b>Gratis</b>
+        <span>Probetraining — unverbindlich kennenlernen</span>
+      </div>
+      <div>
+        <b>Flexibel</b>
+        <span>Monats- und Paket-Abos kündbar nach Laufzeit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section-Closer: zentrierter CTA, kein Box-Container -->
+  <div class="preise__closer">
+    <span class="preise__closer-hint">Erstes Training gratis · unverbindlich kennenlernen</span>
+    <a href="#kontakt" data-open-probe class="preise__cta">Probetraining <i>→</i></a>
+  </div>
+</section>
+
+<!-- CAMP -->
+<section class="camp" id="camp">
+  <video class="camp__video" autoplay muted loop playsinline>
+    <source src="https://videos.pexels.com/video-files/6078259/6078259-hd_1920_1080_25fps.mp4" type="video/mp4">
+  </video>
+  <div class="camp__shade"></div>
+
+  <div class="camp__inner">
+    <span class="eyebrow">— Sommercamp / 03</span>
+    <h2 class="camp__title">FÜNF TAGE.<br/><em>VOLLGAS.</em></h2>
+    <p class="camp__lead">27. – 31. Juli 2026 · Sportplatz Pfaffenholz · 08:30 bis 16:00 Uhr.<br/>Warmes Mittagessen inklusive, Turniere am letzten Tag.</p>
+
+    <div class="camp__row">
+      <div class="camp__price">
+        <span>Mitglieder</span>
+        <b>CHF 320.–</b>
+      </div>
+      <div class="camp__price">
+        <span>Externe</span>
+        <b>CHF 350.–</b>
+      </div>
+    </div>
+
+    <div class="camp__cd" id="countdown">
+      <span class="camp__cd-label">— Countdown bis zum Anpfiff</span>
+      <div class="camp__cd-grid">
+        <div><b id="cd-days">--</b><span>Tage</span></div>
+        <div><b id="cd-hours">--</b><span>Std</span></div>
+        <div><b id="cd-min">--</b><span>Min</span></div>
+        <div><b id="cd-sec">--</b><span>Sek</span></div>
+      </div>
+    </div>
+
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc7J3fOqueBBsLpk37ylwI5lMCgsoIdxyXBNEdfvxx11bJYXA/viewform" target="_blank" rel="noopener noreferrer" class="camp__btn">Jetzt anmelden <i>→</i></a>
+  </div>
+</section>
+
+<!-- TEAM — Foto links sticky, Text rechts scrollt smooth durch -->
+<section class="pin-team" id="team">
+
+  <!-- LINKS: sticky Foto bleibt während Text rechts scrollt -->
+  <aside class="pin-team__media">
+    <img class="pin-team__media-img"
+         src="https://images.unsplash.com/photo-1565884280295-98eb83e41c65?auto=format&fit=crop&w=2200&q=85"
+         alt="Platzhalter — Foto der Gründer folgt" loading="lazy">
+    <div class="pin-team__media-shade"></div>
+    <span class="pin-team__media-tag">— Team / 04</span>
+    <span class="pin-team__media-placeholder">Platzhalter · Echtes Foto folgt</span>
+  </aside>
+
+  <!-- RECHTS: normaler vertikaler Scroll mit Blocks -->
+  <div class="pin-team__content">
+
+    <article class="pin-team__block pin-team__block--intro">
+      <span class="pin-team__kicker">Die Köpfe hinter der Academy</span>
+      <h2 class="pin-team__big">Born<br/><em>to coach.</em><sup>™</sup></h2>
+      <span class="pin-team__hint">↓ Scrolle weiter</span>
+    </article>
+
+    <article class="pin-team__block">
+      <span class="pin-team__no">N° 01 / Mitgründer</span>
+      <h3 class="pin-team__name">Mohamed<br/>Coulibaly</h3>
+      <span class="pin-team__role">Technische Leitung · Head Coach</span>
+      <p>Treibende Kraft hinter der Academy. Spezialisiert auf Technik- und Taktikcoaching auf Amateur- und Profi-Level.</p>
+      <ul>
+        <li>Einzeltraining</li>
+        <li>Premium Coaching</li>
+        <li>Taktik &amp; Spielsystem</li>
+      </ul>
+    </article>
+
+    <article class="pin-team__block pin-team__block--quote">
+      <span class="pin-team__qmark">&ldquo;</span>
+      <p class="pin-team__quote">Wer erfolgreich sein will, muss genau die <em>Fähigkeiten</em> besitzen, die im Moment <em>gefragt</em> sind.</p>
+      <cite>— Leitsatz der Evolution Football Academy</cite>
+    </article>
+
+    <article class="pin-team__block">
+      <span class="pin-team__no">N° 02 / Mitgründer</span>
+      <h3 class="pin-team__name">Gerald<br/>Tekwa</h3>
+      <span class="pin-team__role">Athletik &amp; Mental · Head Coach</span>
+      <p>Fokus auf Spielintelligenz, mentale Stärke und die Athletik moderner Profispieler. Methodik aus Top-Akademien.</p>
+      <ul>
+        <li>Spielintelligenz</li>
+        <li>Mental &amp; Athletik</li>
+        <li>Premium Coaching</li>
+      </ul>
+    </article>
+
+  </div>
+</section>
+
+</section>
+
+<!-- PHILOSOPHIE -->
+<section class="philo" id="philosophie">
+  <header class="philo__head">
+    <span class="eyebrow">— Über uns / 05</span>
+    <h2>WIR ENTWICKELN <em>SPIELER.</em><br/>KEINE SCHABLONEN.</h2>
+  </header>
+  <div class="philo__grid">
+    <article class="philo__card">
+      <span class="philo__no">01</span>
+      <h3>INDIVIDUELL</h3>
+      <p>Jeder Spieler bringt eine andere Geschichte mit. Wir hören zu, analysieren und bauen daraus einen Plan, der zu ihm passt.</p>
+    </article>
+    <article class="philo__card">
+      <span class="philo__no">02</span>
+      <h3>QUALITATIV</h3>
+      <p>Lieber wenig und richtig als viel und beliebig. Methodik aus den besten Akademien Europas — angewandt in Basel.</p>
+    </article>
+    <article class="philo__card">
+      <span class="philo__no">03</span>
+      <h3>MOTIVIEREND</h3>
+      <p>Entwicklung passiert dort, wo Anspruch und Freude zusammenkommen. Wir fordern — und feiern jeden Fortschritt mit.</p>
+    </article>
+    <article class="philo__card">
+      <span class="philo__no">04</span>
+      <h3>NACHHALTIG</h3>
+      <p>Wir denken nicht in Trainings, sondern in Karrieren. Technik, Taktik, Mentalität — alles greift langfristig ineinander.</p>
+    </article>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="kontakt" id="kontakt">
+  <div class="kontakt__inner">
+    <div class="kontakt__head">
+      <span class="eyebrow">— Kontakt / 06</span>
+      <h2 class="kontakt__title">BEREIT, DEIN SPIEL ZU<br/><em>ENTWICKELN?</em></h2>
+      <p class="kontakt__lead">Schreib uns oder ruf an — wir antworten innerhalb von 24 Stunden.</p>
+    </div>
+
+    <div class="kontakt__grid">
+      <a href="mailto:info@evolution-football-academy.ch" class="kcard">
+        <span class="kcard__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2"/>
+            <path d="m3 7 9 7 9-7"/>
+          </svg>
+        </span>
+        <span class="kcard__label">E-Mail</span>
+        <span class="kcard__value">info@evolution-football-academy.ch</span>
+        <span class="kcard__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="tel:+41787369390" class="kcard">
+        <span class="kcard__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>
+          </svg>
+        </span>
+        <span class="kcard__label">Telefon</span>
+        <span class="kcard__value">+41 78 736 93 90</span>
+        <span class="kcard__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="https://wa.me/41762766505" target="_blank" rel="noopener" class="kcard">
+        <span class="kcard__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.099-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.485.71.3 1.263.481 1.694.629.712.227 1.36.195 1.871.121.571-.091 1.758-.721 2.006-1.413.255-.69.255-1.282.18-1.41-.074-.135-.27-.21-.57-.345m-5.446 7.443h-.016c-1.77 0-3.524-.48-5.055-1.38l-.36-.214-3.75.975 1.005-3.645-.239-.375a9.869 9.869 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.5"/>
+          </svg>
+        </span>
+        <span class="kcard__label">WhatsApp</span>
+        <span class="kcard__value">+41 76 276 65 05</span>
+        <span class="kcard__arrow" aria-hidden="true">→</span>
+      </a>
+
+      <a href="https://www.instagram.com/evolutionfootball.academy" target="_blank" rel="noopener" class="kcard">
+        <span class="kcard__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="kcard__label">Instagram</span>
+        <span class="kcard__value">@evolutionfootball.academy</span>
+        <span class="kcard__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STANDORT / ANFAHRT — embedded Google Map + addresses -->
+<section class="standort" id="anfahrt">
+  <header class="standort__head">
+    <span class="eyebrow">— Anfahrt / 07</span>
+    <h2 class="standort__title">FINDE <em>UNS.</em></h2>
+    <p>Wir trainieren auf dem Sportzentrum Pfaffenholz in Basel — direkt an der französischen Grenze.</p>
+  </header>
+
+  <div class="standort__map-wrap">
+    <iframe
+      class="standort__map"
+      title="Sportzentrum Pfaffenholz — Im Burgfelderhof 60b, 4055 Basel"
+      src="https://maps.google.com/maps?q=Sportzentrum+Pfaffenholz%2C+Im+Burgfelderhof+60b%2C+4055+Basel&t=m&z=16&ie=UTF8&output=embed"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen></iframe>
+    <a class="standort__map-link" href="https://www.google.com/maps/place/Sportzentrum+Pfaffenholz/@47.567,7.566,16z" target="_blank" rel="noopener">
+      <span>In Google Maps öffnen</span>
+      <i>↗</i>
+    </a>
+  </div>
+
+  <div class="standort__addrs">
+    <div class="standort__card">
+      <span class="standort__tag">Training · Hauptstandort</span>
+      <b>Sportzentrum Pfaffenholz</b>
+      <span class="standort__street">Im Burgfelderhof 60b<br/>4055 Basel · Schweiz</span>
+      <a href="https://maps.google.com/?q=Sportzentrum+Pfaffenholz%2C+Im+Burgfelderhof+60b%2C+4055+Basel" target="_blank" rel="noopener" class="standort__link">In Google Maps öffnen <i>↗</i></a>
+    </div>
+    <div class="standort__card">
+      <span class="standort__tag">Geschäftsstelle</span>
+      <b>EFA Büro</b>
+      <span class="standort__street">In den Ziegelhöfen 91<br/>4054 Basel · Schweiz</span>
+      <a href="https://maps.google.com/?q=In+den+Ziegelh%C3%B6fen+91%2C+4054+Basel" target="_blank" rel="noopener" class="standort__link">In Google Maps öffnen <i>↗</i></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="bar__mark">EFA</span>
+      <p>Evolution Football Academy GmbH<br/>Basel · Schweiz · est. 2014</p>
+    </div>
+    <div class="footer__cols">
+      <div>
+        <b>Akademie</b>
+        <a href="#leistungen">Leistungen</a>
+        <a href="#preise">Preise</a>
+        <a href="#camp">Sommercamp</a>
+        <a href="#team">Team</a>
+        <a href="#philosophie">Über uns</a>
+        <a href="#anfahrt">Anfahrt</a>
+      </div>
+      <div>
+        <b>Kontakt</b>
+        <a href="mailto:info@evolution-football-academy.ch">E-Mail</a>
+        <a href="tel:+41787369390">Telefon</a>
+        <a href="https://wa.me/41762766505">WhatsApp</a>
+      </div>
+      <div>
+        <b>Social</b>
+        <a href="https://www.instagram.com/evolutionfootball.academy" target="_blank" rel="noopener">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">TikTok</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__base">
+    <span>© <span id="year"></span> Evolution Football Academy GmbH · Basel</span>
+    <span>Sponsor — Stenzbau</span>
+  </div>
+</footer>
+
+<script src="script.js?build=2026051322"></script>
+</body>
+</html>
