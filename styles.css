@@ -1667,10 +1667,14 @@ body::before {
   text-transform: uppercase;
   margin: 24px 0 28px;
 }
-.camp__title em { font-style: normal; color: var(--accent); }
+/* Camp-Section ist dunkle Highlight-Insel — Texte invertiert (cream auf dunkel) */
+.camp__inner { color: var(--ink-dark); }
+.camp .eyebrow { color: var(--accent-2); }
+.camp__title { color: var(--ink-dark); }
+.camp__title em { font-style: normal; color: var(--accent-2); }
 .camp__lead {
   font-size: 17px;
-  color: var(--ink);
+  color: var(--ink-dark);
   opacity: 0.85;
   line-height: 1.6;
   margin-bottom: 36px;
@@ -1685,8 +1689,8 @@ body::before {
   gap: 60px;
   padding: 24px 0;
   margin: 0 auto 36px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid rgba(239, 234, 224, 0.18);
+  border-bottom: 1px solid rgba(239, 234, 224, 0.18);
   max-width: 540px;
 }
 .camp__price { display: flex; flex-direction: column; gap: 4px; }
@@ -1695,13 +1699,13 @@ body::before {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--ink-dark-dim);
 }
 .camp__price b {
   font-family: var(--f-display);
   font-weight: 400;
   font-size: 42px;
-  color: var(--ink);
+  color: var(--ink-dark);
   letter-spacing: 0.01em;
 }
 
@@ -1714,7 +1718,7 @@ body::before {
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--ink-dark-dim);
   display: block;
   margin-bottom: 18px;
 }
@@ -1726,14 +1730,14 @@ body::before {
 .camp__cd-grid > div {
   padding: 18px 6px;
   background: rgba(244, 241, 234, 0.04);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(239, 234, 224, 0.14);
   border-radius: 12px;
 }
 .camp__cd-grid b {
   display: block;
   font-family: var(--f-display);
   font-size: clamp(30px, 4vw, 52px);
-  color: var(--ink);
+  color: var(--ink-dark);
   line-height: 1;
   margin-bottom: 6px;
 }
@@ -1742,7 +1746,7 @@ body::before {
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--ink-dark-dim);
 }
 
 .camp__btn {
@@ -1751,9 +1755,9 @@ body::before {
   gap: 14px;
   padding: 18px 30px;
   background: var(--accent);
-  color: var(--ink);
+  color: #161616;
   border-radius: 100px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
   transition: gap .3s var(--ease), transform .3s var(--ease), background .3s;
 }
