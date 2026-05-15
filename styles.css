@@ -6,19 +6,20 @@
 :root {
   /* Brand palette pulled from the EFA crest:
      deep black, neutral grey, pure-ish white, warm gold. */
-  --bg: #0a0a0a;              /* schwarz wie Logo-Hintergrund */
-  --bg-2: #181818;            /* deutlich heller fürs Layering */
-  --surface: #1f1f1f;         /* Cards/Surfaces */
-  --bg-light: #efeae0;        /* cream Hintergrund für invertierte Section */
-  --ink-dark: #161616;        /* dunkler Text auf hellem Grund */
-  --ink-dark-dim: #5e5e5e;    /* sekundärer dunkler Text */
-  --ink: #efeae0;             /* warmes weiss wie Löwe + Schild */
-  --ink-dim: #8e8e8e;         /* neutrales mid-grey */
-  --line: rgba(239, 234, 224, 0.10);
-  --line-strong: rgba(239, 234, 224, 0.22);
-  --accent: #c9a542;          /* Logo-Gold (warm, klassisch) */
-  --accent-2: #e0bf61;        /* helleres Gold für Hover/Glow */
-  --accent-deep: #9c7d2c;     /* dunkleres Gold für tiefere Töne */
+  /* LIGHT VARIANT — invertiertes Theme für helleren Look */
+  --bg: #f5efe2;              /* warmes cream als Hauptseiten-Hintergrund */
+  --bg-2: #ebe4d3;            /* leicht dunkleres cream für Layering */
+  --surface: #ffffff;         /* Cards stechen weiss heraus */
+  --ink: #161616;             /* dunkler Haupttext */
+  --ink-dim: #6b6b6b;         /* sekundärer Text */
+  --line: rgba(22, 22, 22, 0.10);
+  --line-strong: rgba(22, 22, 22, 0.22);
+  --accent: #b08524;          /* etwas dunkleres Gold für Kontrast auf hell */
+  --accent-2: #cba045;        /* helleres Gold für Hover */
+  --accent-deep: #8a6818;     /* tiefstes Gold */
+  --bg-light: #0a0a0a;        /* invertierte Section ist jetzt DUNKEL */
+  --ink-dark: #efeae0;        /* helle Schrift auf dunkler Invertierten-Section */
+  --ink-dark-dim: #9a9a9a;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-cinema: cubic-bezier(0.65, 0, 0.35, 1);
 
@@ -138,10 +139,10 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(10, 10, 10, 0.55);
+  background: rgba(245, 239, 226, 0.7);
   backdrop-filter: blur(10px) saturate(1.2);
   -webkit-backdrop-filter: blur(10px) saturate(1.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(22, 22, 22, 0.05);
   transition:
     padding .35s var(--ease),
     background .3s,
@@ -149,10 +150,10 @@ body::before {
 }
 .bar.scrolled {
   padding: 6px clamp(24px, 4vw, 56px);
-  background: rgba(10, 10, 10, 0.92);
+  background: rgba(245, 239, 226, 0.95);
   backdrop-filter: blur(14px) saturate(1.3);
   -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(22, 22, 22, 0.08);
 }
 /* Nav absolut in der Mitte → echte Viewport-Zentrierung, unabhängig von Logo-/Button-Breite */
 .bar__nav {
@@ -274,12 +275,13 @@ body::before {
   width: 100%; height: 100%;
   object-fit: cover;
   z-index: 0;
-  filter: saturate(0.85) contrast(1.05) brightness(0.78);
+  filter: saturate(0.9) contrast(1.02) brightness(0.92);
 }
 .hero__shade {
   position: absolute; inset: 0;
+  /* Heller Verlauf für Light-Theme: oben Cream-Fade, unten Cream-Übergang zur Section */
   background:
-    linear-gradient(180deg, rgba(10,10,10,0.45) 0%, transparent 30%, transparent 70%, rgba(10,10,10,0.75) 100%);
+    linear-gradient(180deg, rgba(245,239,226,0.6) 0%, transparent 30%, transparent 70%, rgba(245,239,226,0.85) 100%);
   z-index: 1;
 }
 
@@ -1775,16 +1777,16 @@ body::before {
   padding: 100px 36px;
   background: var(--bg-light);
   color: var(--ink-dark);
-  border-top: 1px solid rgba(22, 22, 22, 0.12);
-  border-bottom: 1px solid rgba(22, 22, 22, 0.12);
+  border-top: 1px solid rgba(239, 234, 224, 0.12);
+  border-bottom: 1px solid rgba(239, 234, 224, 0.12);
 }
 .philo__head {
   max-width: 1480px;
   margin: 0 auto 60px;
 }
-/* Eyebrow im invertierten Bereich: gold bleibt, aber auf hellem Grund */
+/* Eyebrow im invertierten Bereich: helleres Gold auf dunklem Grund */
 .philo .eyebrow {
-  color: var(--accent-deep);
+  color: var(--accent-2);
 }
 .philo__head h2 {
   font-family: var(--f-display);
@@ -1796,7 +1798,7 @@ body::before {
   margin-top: 18px;
   color: var(--ink-dark);
 }
-.philo__head h2 em { font-style: normal; color: var(--accent-deep); }
+.philo__head h2 em { font-style: normal; color: var(--accent-2); }
 .philo__grid {
   max-width: 1480px;
   margin: 0 auto;
@@ -1808,14 +1810,14 @@ body::before {
 @media (max-width: 600px) { .philo__grid { grid-template-columns: 1fr; } .philo { padding: 80px 22px; } }
 .philo__card {
   padding: 34px 28px 30px;
-  background: rgba(22, 22, 22, 0.04);
-  border: 1px solid rgba(22, 22, 22, 0.12);
+  background: rgba(239, 234, 224, 0.04);
+  border: 1px solid rgba(239, 234, 224, 0.14);
   border-radius: 16px;
   transition: border-color .35s, background .35s, transform .35s var(--ease);
 }
 .philo__card:hover {
   border-color: var(--ink-dark);
-  background: rgba(22, 22, 22, 0.07);
+  background: rgba(239, 234, 224, 0.07);
   transform: translateY(-3px);
 }
 .philo__no {
@@ -1823,7 +1825,7 @@ body::before {
   font-family: var(--f-mono);
   font-size: 12px;
   letter-spacing: 0.22em;
-  color: var(--accent-deep);
+  color: var(--accent-2);
   margin-bottom: 22px;
   font-weight: 600;
 }
@@ -1892,7 +1894,7 @@ body::before {
   flex-direction: column;
   gap: 14px;
   padding: 24px 22px 22px;
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(22, 22, 22, 0.04);
   border: 1px solid var(--line);
   border-radius: 16px;
   color: var(--ink);
@@ -1913,7 +1915,7 @@ body::before {
 .kcard:hover {
   transform: translateY(-3px);
   border-color: rgba(201, 165, 66, 0.55);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(22, 22, 22, 0.06);
 }
 .kcard:hover::before { opacity: 1; }
 
@@ -2237,7 +2239,8 @@ body::before {
   z-index: 95;
   width: 340px;
   padding: 22px 22px 20px;
-  background: rgba(14, 14, 14, 0.92);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--ink);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   border: 1px solid rgba(201, 165, 66, 0.4);
@@ -2318,9 +2321,9 @@ body::before {
   gap: 8px;
   margin: 6px 0 4px;
   padding: 14px 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(22, 22, 22, 0.05);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(22, 22, 22, 0.08);
 }
 .campop__countdown > div {
   display: flex;
@@ -2484,7 +2487,7 @@ body::before {
   position: relative;
   width: 100%;
   max-width: 620px;
-  background: #131313;
+  background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 24px;
   padding: 40px 44px 32px;
@@ -2504,7 +2507,7 @@ body::before {
   right: 22px;
   width: 36px;
   height: 36px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(22, 22, 22, 0.06);
   border: 1px solid var(--line);
   border-radius: 50%;
   color: var(--ink-dim);
@@ -2523,7 +2526,7 @@ body::before {
 .probe__progress-dot {
   flex: 1;
   height: 3px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(22, 22, 22, 0.10);
   border-radius: 2px;
   display: block;
   transition: background .35s;
@@ -2585,7 +2588,7 @@ body::before {
   align-items: center;
   gap: 10px;
   padding: 13px 22px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(22, 22, 22, 0.05);
   border: 1px solid var(--line);
   border-radius: 100px;
   color: var(--ink);
@@ -2615,7 +2618,7 @@ body::before {
   flex-direction: column;
   align-items: center;
   padding: 12px 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(22, 22, 22, 0.05);
   border: 1px solid var(--line);
   border-radius: 12px;
   color: var(--ink);
@@ -2688,7 +2691,7 @@ body::before {
 }
 .probe__field input,
 .probe__field textarea {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(22, 22, 22, 0.06);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 13px 16px;
@@ -2700,7 +2703,7 @@ body::before {
   transition: border-color .25s, background .25s;
 }
 .probe__field input:focus,
-.probe__field textarea:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.06); }
+.probe__field textarea:focus { border-color: var(--accent); background: rgba(22, 22, 22, 0.08); }
 
 .probe__step--done {
   align-items: center;
