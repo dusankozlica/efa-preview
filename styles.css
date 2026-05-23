@@ -1100,26 +1100,32 @@ body::before {
 }
 .preise__cta i { font-style: normal; }
 /* ============================================
-   TEAM — Sticky split layout
-   Linkes Foto bleibt sticky, rechte Spalte scrollt smooth durch
+   TEAM — Gemeinsamer cream-Hintergrund, Foto als gerahmte sticky Karte
+   Linke Karte bleibt sticky während rechte Spalte smooth durchscrollt
    ============================================ */
 .pin-team {
   position: relative;
   background: var(--bg);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
   display: grid;
-  grid-template-columns: 58% 42%;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  gap: clamp(40px, 4vw, 80px);
+  padding: clamp(60px, 7vw, 100px) clamp(36px, 4vw, 70px) 0;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
-/* Linke Spalte: sticky image */
+/* Linke Spalte: sticky FRAMED Karte (statt full-width Spalte mit hartem Kontrast) */
 .pin-team__media {
   position: sticky;
-  top: 0;
+  top: 100px;
   align-self: start;
-  height: 100vh;
+  height: calc(100vh - 140px);
   overflow: hidden;
-  background: var(--bg-2);
+  border-radius: 28px;
+  background: #1a1a1a;
+  box-shadow:
+    0 24px 60px -20px rgba(22, 22, 22, 0.25),
+    0 0 0 1px rgba(22, 22, 22, 0.06);
 }
 .pin-team__media-img {
   width: 100%;
@@ -1131,16 +1137,11 @@ body::before {
 .pin-team__media-shade {
   position: absolute; inset: 0;
   background:
-    linear-gradient(90deg,
-      rgba(10,10,10,0.25) 0%,
-      transparent 25%,
-      transparent 80%,
-      rgba(10,10,10,0.85) 100%),
     linear-gradient(180deg,
-      rgba(10,10,10,0.5) 0%,
-      transparent 18%,
-      transparent 80%,
-      rgba(10,10,10,0.75) 100%);
+      rgba(10,10,10,0.35) 0%,
+      transparent 22%,
+      transparent 78%,
+      rgba(10,10,10,0.65) 100%);
   pointer-events: none;
 }
 
@@ -1152,15 +1153,15 @@ body::before {
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-2);
 }
-.pin-team__media-tag { top: 32px; left: 32px; }
+.pin-team__media-tag { top: 24px; left: 24px; }
 .pin-team__media-placeholder {
-  bottom: 32px; left: 32px;
-  color: var(--ink-dim);
+  bottom: 24px; left: 24px;
+  color: rgba(239, 234, 224, 0.7);
   background: rgba(10,10,10,0.55);
   padding: 6px 12px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(239, 234, 224, 0.18);
   backdrop-filter: blur(8px);
   border-radius: 4px;
   font-size: 10px;
