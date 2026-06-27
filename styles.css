@@ -2814,6 +2814,50 @@ body::before {
   .probe__date-num { font-size: 20px; }
 }
 
+/* ============================================
+   SPONSOR — Dezenter Banner zwischen Standort und Footer
+   ============================================ */
+.sponsor {
+  background: var(--bg-2);
+  padding: 50px 36px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.sponsor__inner {
+  max-width: 1480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.sponsor__kicker {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.sponsor__brand {
+  font-family: var(--f-display);
+  font-size: clamp(40px, 5.5vw, 76px);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  line-height: 1;
+}
+.sponsor__desc {
+  font-size: 14px;
+  color: var(--ink-dim);
+  max-width: 520px;
+  line-height: 1.55;
+}
+.sponsor__desc strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 600px) {
+  .sponsor { padding: 36px 22px; }
+  .sponsor__brand { font-size: 38px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -250,7 +250,7 @@
   // ============================================
   const probe = $('#probe');
   if (probe) {
-    const state = { step: 1, training: null, age: null, position: null, slot: null, date: null, time: null };
+    const state = { step: 1, training: null, birth: null, position: null, slot: null, date: null, time: null };
     const totalSteps = 5;
 
     const $step = (n) => probe.querySelector(`.probe__step[data-step="${n}"]`);
@@ -342,7 +342,7 @@
 
     const stepValid = (s) => {
       if (s === 1) return !!state.training;
-      if (s === 2) return !!state.age;
+      if (s === 2) return !!state.birth;
       if (s === 3) return !!state.position;
       if (s === 4) {
         if (state.training === 'kinder') return !!state.slot;
@@ -465,11 +465,16 @@
       }
     };
 
-    // Form input listener (step 5)
+    // Form input listener (steps 2 & 5)
     ['probe-name','probe-email','probe-phone','probe-note'].forEach(id => {
       $('#'+id)?.addEventListener('input', () => {
         $next.disabled = !stepValid(state.step);
       });
+    });
+    // Geburtsdatum (Step 2) — Wert in State setzen
+    $('#probe-birth')?.addEventListener('change', (e) => {
+      state.birth = e.target.value;
+      $next.disabled = !stepValid(state.step);
     });
 
     // Nav handlers
@@ -503,7 +508,7 @@
           `ich möchte ein Probetraining buchen:\n\n` +
           `Training: ${trainingLabels[state.training] || state.training}\n` +
           `Name: ${name}\n` +
-          `Alter: ${state.age}\n` +
+          `Geburtsdatum: ${state.birth}\n` +
           `Position: ${state.position}\n` +
           `${terminLine}\n` +
           `E-Mail: ${email}\n` +
