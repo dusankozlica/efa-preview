@@ -243,12 +243,15 @@
   });
 
   // ============================================
-  // PROBETRAINING WIZARD
+  // PROBETRAINING WIZARD — 5 Schritte: Training → Alter → Position → Termin → Kontakt
+  // Termin-Logik unterscheidet sich je nach Trainingsart:
+  //   - Kinder: 2 feste Slots
+  //   - Einzel/Klein: Wunschtermin (wird von Akademie bestätigt)
   // ============================================
   const probe = $('#probe');
   if (probe) {
-    const state = { step: 1, age: null, position: null, date: null, time: null };
-    const totalSteps = 4;
+    const state = { step: 1, training: null, age: null, position: null, slot: null, date: null, time: null };
+    const totalSteps = 5;
 
     const $step = (n) => probe.querySelector(`.probe__step[data-step="${n}"]`);
     const $dots = $$('.probe__progress-dot', probe);
@@ -258,10 +261,11 @@
     const $head = $('.probe__heading', probe);
 
     const headings = {
-      1: 'Lass uns dich kennenlernen.',
-      2: 'Wo fühlst du dich wohl?',
-      3: 'Such dir deinen Termin.',
-      4: 'Fast geschafft — letzter Schritt.',
+      1: 'Welches Training interessiert dich?',
+      2: 'Lass uns dich kennenlernen.',
+      3: 'Wo fühlst du dich wohl?',
+      4: 'Such dir deinen Termin.',
+      5: 'Fast geschafft — letzter Schritt.',
       done: 'Wir freuen uns auf dich!',
     };
 
@@ -276,11 +280,20 @@
       document.body.style.overflow = '';
     };
 
-    // Open triggers — alle Elemente mit [data-open-probe]
-    // (Bar-Button, alle Leistungen-Akkordeon-CTAs, Preise-Closer-CTA, ...)
+    // Open triggers — wenn data-training-type gesetzt, Trainingsart vorauswählen
     $$('[data-open-probe]').forEach(el => el.addEventListener('click', (e) => {
-      // Verhindert Navigation zu #kontakt bei <a>-Tags
       e.preventDefault();
+      const t = el.dataset.trainingType;
+      if (t) {
+        // Trainingsart vorauswählen + visuelle Selektion setzen
+        state.training = t;
+        const chips = probe.querySelectorAll('.probe__chips[data-field="training"] .probe__chip');
+        chips.forEach(c => {
+          c.classList.toggle('is-selected', c.dataset.val === t);
+        });
+        // Termin-Layout für Step 4 vorbereiten
+        renderDateLayout();
+      }
       openWizard();
     }));
     // Close triggers
@@ -288,7 +301,6 @@
       e.preventDefault();
       closeWizard();
     }));
-    // Esc-Taste
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && probe.classList.contains('is-open')) closeWizard();
     });
@@ -300,6 +312,9 @@
       target?.classList.add('is-active');
       $cur.textContent = s === 'done' ? '✓' : s;
       $head.textContent = headings[s] || headings[1];
+
+      // Wenn wir auf Step 4 ankommen, das richtige Layout vorbereiten
+      if (s === 4) renderDateLayout();
 
       // Progress dots
       $dots.forEach((d, i) => {
@@ -326,10 +341,14 @@
     };
 
     const stepValid = (s) => {
-      if (s === 1) return !!state.age;
-      if (s === 2) return !!state.position;
-      if (s === 3) return !!(state.date && state.time);
+      if (s === 1) return !!state.training;
+      if (s === 2) return !!state.age;
+      if (s === 3) return !!state.position;
       if (s === 4) {
+        if (state.training === 'kinder') return !!state.slot;
+        return !!(state.date && state.time);
+      }
+      if (s === 5) {
         const name = $('#probe-name').value.trim();
         const email = $('#probe-email').value.trim();
         return name.length > 1 && /.+@.+\..+/.test(email);
@@ -337,35 +356,80 @@
       return false;
     };
 
-    // Chip selection (steps 1, 2)
-    $$('.probe__chips[data-field] .probe__chip', probe).forEach(chip => {
+    // Generische Chip-Auswahl (Trainingsart, Alter, Position, fixed slot)
+    $$('.probe__chips[data-field] .probe__chip, .probe__fixed-slots[data-field] .probe__chip', probe).forEach(chip => {
       chip.addEventListener('click', () => {
         const field = chip.parentElement.dataset.field;
         chip.parentElement.querySelectorAll('.probe__chip').forEach(c => c.classList.remove('is-selected'));
         chip.classList.add('is-selected');
         state[field] = chip.dataset.val;
+        // Wenn Trainingsart geändert wird → Termin-Layout neu rendern
+        if (field === 'training') {
+          state.slot = null;
+          state.date = null;
+          state.time = null;
+          renderDateLayout();
+        }
         $next.disabled = !stepValid(state.step);
       });
     });
 
-    // Date grid generator
+    // ===== Termin-Logik =====
     const datesEl = $('#probe-dates', probe);
     const timesEl = $('#probe-times', probe);
+    const fixedSlotsEl = $('#probe-fixed-slots', probe);
+    const noteConfirmEl = $('#probe-note-confirm', probe);
+    const dateQEl = $('#probe-date-q', probe);
+    const dateHintEl = $('#probe-date-hint', probe);
     const dayShort = ['SO','MO','DI','MI','DO','FR','SA'];
     const monthShort = ['JAN','FEB','MÄR','APR','MAI','JUN','JUL','AUG','SEP','OKT','NOV','DEZ'];
+
+    // Erlaubte Uhrzeiten pro Wochentag für Wunschtermin
+    const allowedTimes = {
+      0: ['09:00', '10:00', '11:00'], // Sonntag
+      1: ['15:30', '16:30'],          // Montag
+      2: ['15:30', '16:30'],          // Dienstag
+      3: ['15:30', '16:30'],          // Mittwoch
+      4: ['15:30', '16:30'],          // Donnerstag
+      5: ['15:30', '16:30'],          // Freitag
+      6: ['08:30'],                   // Samstag
+    };
+
+    const renderDateLayout = () => {
+      if (state.training === 'kinder') {
+        // Kinder: feste Slots
+        fixedSlotsEl.hidden = false;
+        datesEl.hidden = true;
+        timesEl.hidden = true;
+        noteConfirmEl.hidden = true;
+        dateQEl.textContent = 'Wähle deinen Probetraining-Termin:';
+        dateHintEl.textContent = 'Beide Termine im Sportzentrum Pfaffenholz, Basel.';
+      } else if (state.training === 'einzel' || state.training === 'kleingruppe') {
+        // Einzel/Klein: Wunschtermin
+        fixedSlotsEl.hidden = true;
+        datesEl.hidden = false;
+        timesEl.hidden = (state.date == null);
+        noteConfirmEl.hidden = false;
+        dateQEl.textContent = 'Wann passt es dir?';
+        dateHintEl.textContent = 'Wähle einen Wunschtag — die verfügbaren Uhrzeiten erscheinen danach.';
+        buildDates();
+      }
+    };
+
     const buildDates = () => {
       datesEl.innerHTML = '';
       const today = new Date();
       let added = 0, offset = 1;
-      while (added < 12) {
+      while (added < 14 && offset < 60) {
         const d = new Date(today);
         d.setDate(today.getDate() + offset);
         offset++;
-        if (d.getDay() === 0) continue; // Sonntag überspringen
+        // Alle Wochentage haben mindestens 1 erlaubte Zeit, also alle zeigen
         const iso = d.toISOString().slice(0,10);
         const btn = document.createElement('button');
         btn.className = 'probe__date';
         btn.dataset.val = iso;
+        btn.dataset.weekday = d.getDay();
         btn.innerHTML = `
           <span class="probe__date-day">${dayShort[d.getDay()]}</span>
           <span class="probe__date-num">${d.getDate()}</span>
@@ -375,6 +439,24 @@
           datesEl.querySelectorAll('.probe__date').forEach(b => b.classList.remove('is-selected'));
           btn.classList.add('is-selected');
           state.date = iso;
+          state.time = null;
+          // Uhrzeiten passend zum Wochentag rendern
+          const wd = d.getDay();
+          const times = allowedTimes[wd] || [];
+          timesEl.innerHTML = '';
+          times.forEach(t => {
+            const tBtn = document.createElement('button');
+            tBtn.className = 'probe__chip';
+            tBtn.dataset.val = t;
+            tBtn.textContent = t + ' Uhr';
+            tBtn.addEventListener('click', () => {
+              timesEl.querySelectorAll('.probe__chip').forEach(x => x.classList.remove('is-selected'));
+              tBtn.classList.add('is-selected');
+              state.time = t;
+              $next.disabled = !stepValid(state.step);
+            });
+            timesEl.appendChild(tBtn);
+          });
           timesEl.hidden = false;
           $next.disabled = !stepValid(state.step);
         });
@@ -382,19 +464,8 @@
         added++;
       }
     };
-    buildDates();
 
-    // Time chip selection
-    timesEl.querySelectorAll('.probe__chip').forEach(c => {
-      c.addEventListener('click', () => {
-        timesEl.querySelectorAll('.probe__chip').forEach(x => x.classList.remove('is-selected'));
-        c.classList.add('is-selected');
-        state.time = c.dataset.val;
-        $next.disabled = !stepValid(state.step);
-      });
-    });
-
-    // Form input listener (step 4)
+    // Form input listener (step 5)
     ['probe-name','probe-email','probe-phone','probe-note'].forEach(id => {
       $('#'+id)?.addEventListener('input', () => {
         $next.disabled = !stepValid(state.step);
@@ -409,19 +480,32 @@
       if (!stepValid(state.step)) return;
       if (state.step < totalSteps) { state.step++; renderStep(state.step); }
       else {
-        // Submit — Mailto öffnen mit allen Daten (sicheres "no backend"-Setup)
+        // Submit
         const name = $('#probe-name').value.trim();
         const email = $('#probe-email').value.trim();
         const phone = $('#probe-phone').value.trim();
         const note = $('#probe-note').value.trim();
+        const trainingLabels = {
+          kinder: 'Kindergruppe',
+          einzel: 'Einzeltraining',
+          kleingruppe: 'Kleingruppe',
+        };
+        const slotLabels = {
+          mittwoch_1615: 'Mittwoch 16:15 Uhr',
+          samstag_0945: 'Samstag 09:45 Uhr',
+        };
+        const terminLine = state.training === 'kinder'
+          ? `Termin: ${slotLabels[state.slot] || state.slot}`
+          : `Wunschtermin: ${state.date} um ${state.time} Uhr (wird von der Akademie bestätigt)`;
         const subject = encodeURIComponent('Probetraining-Anfrage');
         const body = encodeURIComponent(
           `Hallo Evolution Football Academy,\n\n` +
           `ich möchte ein Probetraining buchen:\n\n` +
+          `Training: ${trainingLabels[state.training] || state.training}\n` +
           `Name: ${name}\n` +
           `Alter: ${state.age}\n` +
           `Position: ${state.position}\n` +
-          `Wunschtermin: ${state.date} um ${state.time} Uhr\n` +
+          `${terminLine}\n` +
           `E-Mail: ${email}\n` +
           `Telefon: ${phone || '—'}\n` +
           `Nachricht: ${note || '—'}\n\n` +

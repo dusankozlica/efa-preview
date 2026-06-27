@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?build=2026051902" />
+<link rel="stylesheet" href="styles.css?build=2026051903" />
 </head>
 <body>
 
@@ -26,15 +26,26 @@
       <i class="probe__progress-dot" data-step="2"></i>
       <i class="probe__progress-dot" data-step="3"></i>
       <i class="probe__progress-dot" data-step="4"></i>
+      <i class="probe__progress-dot" data-step="5"></i>
     </div>
 
     <header class="probe__head">
-      <span class="probe__step-label">Schritt <b id="probe-cur">1</b> / 4</span>
-      <h3 class="probe__heading" id="probe-title">Lass uns dich kennenlernen.</h3>
+      <span class="probe__step-label">Schritt <b id="probe-cur">1</b> / 5</span>
+      <h3 class="probe__heading" id="probe-title">Welches Training interessiert dich?</h3>
     </header>
 
-    <!-- STEP 1: Alter -->
+    <!-- STEP 1: Trainingsart -->
     <section class="probe__step is-active" data-step="1">
+      <p class="probe__q">Wofür möchtest du dich anmelden?</p>
+      <div class="probe__chips probe__chips--big" data-field="training">
+        <button class="probe__chip" data-val="kinder"><span class="probe__chip-ico">⚽</span>Kindergruppe</button>
+        <button class="probe__chip" data-val="einzel"><span class="probe__chip-ico">🎯</span>Einzeltraining</button>
+        <button class="probe__chip" data-val="kleingruppe"><span class="probe__chip-ico">👥</span>Kleingruppe</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: Alter -->
+    <section class="probe__step" data-step="2">
       <p class="probe__q">Wie alt bist du?</p>
       <div class="probe__chips" data-field="age">
         <button class="probe__chip" data-val="4-6">4–6 Jahre</button>
@@ -45,8 +56,8 @@
       </div>
     </section>
 
-    <!-- STEP 2: Position -->
-    <section class="probe__step" data-step="2">
+    <!-- STEP 3: Position -->
+    <section class="probe__step" data-step="3">
       <p class="probe__q">Welche Position spielst du am liebsten?</p>
       <div class="probe__chips probe__chips--big" data-field="position">
         <button class="probe__chip" data-val="torwart"><span class="probe__chip-ico">🥅</span>Torwart</button>
@@ -57,21 +68,23 @@
       </div>
     </section>
 
-    <!-- STEP 3: Datum + Uhrzeit -->
-    <section class="probe__step" data-step="3">
-      <p class="probe__q">Wann passt es dir?</p>
-      <span class="probe__hint">Wähle einen Tag — die Uhrzeit erscheint danach.</span>
-      <div class="probe__dates" id="probe-dates" data-field="date"></div>
-      <div class="probe__times" id="probe-times" data-field="time" hidden>
-        <button class="probe__chip" data-val="16:00">16:00</button>
-        <button class="probe__chip" data-val="17:00">17:00</button>
-        <button class="probe__chip" data-val="18:00">18:00</button>
-        <button class="probe__chip" data-val="19:00">19:00</button>
+    <!-- STEP 4: Termin — wird per JS je nach Trainingsart unterschiedlich gefüllt -->
+    <section class="probe__step" data-step="4">
+      <p class="probe__q" id="probe-date-q">Wann passt es dir?</p>
+      <span class="probe__hint" id="probe-date-hint">Wähle einen Tag — die Uhrzeit erscheint danach.</span>
+      <!-- Kinder-Variante: 2 feste Termine -->
+      <div class="probe__fixed-slots" id="probe-fixed-slots" data-field="slot" hidden>
+        <button class="probe__chip probe__chip--slot" data-val="mittwoch_1615"><span class="probe__chip-ico">📅</span>Mittwoch · 16:15 Uhr</button>
+        <button class="probe__chip probe__chip--slot" data-val="samstag_0945"><span class="probe__chip-ico">📅</span>Samstag · 09:45 Uhr</button>
       </div>
+      <!-- Einzel/Klein-Variante: Wunschtermin mit Akademie-Bestätigung -->
+      <div class="probe__dates" id="probe-dates" data-field="date" hidden></div>
+      <div class="probe__times" id="probe-times" data-field="time" hidden></div>
+      <span class="probe__note" id="probe-note-confirm" hidden>Hinweis: Dein Wunschtermin wird von der Akademie geprüft und bestätigt.</span>
     </section>
 
-    <!-- STEP 4: Kontaktdaten -->
-    <section class="probe__step" data-step="4">
+    <!-- STEP 5: Kontaktdaten -->
+    <section class="probe__step" data-step="5">
       <p class="probe__q">Wie erreichen wir dich?</p>
       <div class="probe__form">
         <label class="probe__field">
@@ -198,65 +211,15 @@
 <section class="leistungen" id="leistungen">
   <header class="leistungen__head">
     <span class="eyebrow">— Leistungen / 01</span>
-    <h2>VIER WEGE,<br/>DEIN <em>SPIEL</em> ZU ENTWICKELN.</h2>
+    <h2>DREI WEGE,<br/>DEIN <em>SPIEL</em> ZU ENTWICKELN.</h2>
     <p>Klicke auf einen Balken um Details zu sehen.</p>
   </header>
 
   <div class="acc" id="acc">
 
-    <article class="acc__row" data-open="true">
+    <article class="acc__row acc__row--feature" data-open="true">
       <button class="acc__head" aria-expanded="true">
         <span class="acc__num">01</span>
-        <h3 class="acc__title">EINZELTRAINING</h3>
-        <span class="acc__hint">Eins-zu-eins</span>
-        <span class="acc__icon" aria-hidden="true"></span>
-      </button>
-      <div class="acc__body">
-        <div class="acc__body-inner">
-          <div class="acc__copy">
-            <p>1-zu-1 Coaching mit personalisiertem Trainingsplan. Für Amateure und Profis, die gezielt an Schwächen arbeiten und Stärken ausbauen wollen.</p>
-            <ul>
-              <li>Persönlicher Trainingsplan</li>
-              <li>Technik- &amp; Videoanalyse</li>
-              <li>Flexible Terminierung</li>
-            </ul>
-            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
-          </div>
-          <div class="acc__media">
-            <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <article class="acc__row">
-      <button class="acc__head" aria-expanded="false">
-        <span class="acc__num">02</span>
-        <h3 class="acc__title">KLEINGRUPPE</h3>
-        <span class="acc__hint">2–6 Spieler</span>
-        <span class="acc__icon" aria-hidden="true"></span>
-      </button>
-      <div class="acc__body">
-        <div class="acc__body-inner">
-          <div class="acc__copy">
-            <p>Die ideale Balance zwischen individuellem Coaching und Mannschaftsspiel. Kleine Gruppen, hohe Intensität, echte Spielsituationen.</p>
-            <ul>
-              <li>2 bis 6 Spieler pro Gruppe</li>
-              <li>Spielsituationen &amp; Taktik</li>
-              <li>Mental- &amp; Athletiktraining</li>
-            </ul>
-            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
-          </div>
-          <div class="acc__media">
-            <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </article>
-
-    <article class="acc__row acc__row--feature">
-      <button class="acc__head" aria-expanded="false">
-        <span class="acc__num">03</span>
         <h3 class="acc__title">KINDER GRUPPE</h3>
         <span class="acc__hint">4 – 10+ Jahre · Beliebtestes Angebot</span>
         <span class="acc__icon" aria-hidden="true"></span>
@@ -270,7 +233,7 @@
               <li>Samstag · 09:45 Uhr</li>
               <li>Sportzentrum Pfaffenholz, Basel</li>
             </ul>
-            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
+            <a href="#kontakt" data-open-probe data-training-type="kinder" class="acc__cta">Probetraining <i>→</i></a>
           </div>
           <div class="acc__media">
             <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
@@ -281,24 +244,49 @@
 
     <article class="acc__row">
       <button class="acc__head" aria-expanded="false">
-        <span class="acc__num">04</span>
-        <h3 class="acc__title">PREMIUM</h3>
-        <span class="acc__hint">Pro Coaching</span>
+        <span class="acc__num">02</span>
+        <h3 class="acc__title">EINZELTRAINING</h3>
+        <span class="acc__hint">Eins-zu-eins</span>
         <span class="acc__icon" aria-hidden="true"></span>
       </button>
       <div class="acc__body">
         <div class="acc__body-inner">
           <div class="acc__copy">
-            <p>Für Spieler mit professionellen Ambitionen. Komplette, langfristige Betreuung mit individuellem Plan, Taktik- und Videoanalyse, persönlichem Coaching.</p>
+            <p>1-zu-1 Coaching mit personalisiertem Trainingsplan. Für Amateure und Profis, die gezielt an Schwächen arbeiten und Stärken ausbauen wollen.</p>
             <ul>
-              <li>Individueller Trainingsplan</li>
-              <li>Taktik- &amp; Videoanalyse</li>
-              <li>Persönliches 1:1 Coaching</li>
+              <li>Persönlicher Trainingsplan</li>
+              <li>Technikfeinschliff</li>
+              <li>Flexible Terminierung</li>
             </ul>
-            <a href="#kontakt" data-open-probe class="acc__cta">Probetraining <i>→</i></a>
+            <a href="#kontakt" data-open-probe data-training-type="einzel" class="acc__cta">Probetraining <i>→</i></a>
           </div>
           <div class="acc__media">
-            <img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="acc__row">
+      <button class="acc__head" aria-expanded="false">
+        <span class="acc__num">03</span>
+        <h3 class="acc__title">KLEINGRUPPE</h3>
+        <span class="acc__hint">2–6 Spieler</span>
+        <span class="acc__icon" aria-hidden="true"></span>
+      </button>
+      <div class="acc__body">
+        <div class="acc__body-inner">
+          <div class="acc__copy">
+            <p>Die ideale Balance zwischen individuellem Coaching und Mannschaftsspiel. Kleine Gruppen, hohe Intensität, echte Spielsituationen.</p>
+            <ul>
+              <li>2 bis 6 Spieler pro Gruppe</li>
+              <li>Spielsituationen &amp; Taktik</li>
+              <li>Mental- &amp; Athletiktraining</li>
+            </ul>
+            <a href="#kontakt" data-open-probe data-training-type="kleingruppe" class="acc__cta">Probetraining <i>→</i></a>
+          </div>
+          <div class="acc__media">
+            <img src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=900&q=80" alt="" loading="lazy">
           </div>
         </div>
       </div>
@@ -373,7 +361,7 @@
         <ul>
           <li>1-zu-1 Coaching</li>
           <li>Persönlicher Trainingsplan</li>
-          <li>Video- &amp; Technikanalyse</li>
+          <li>Technikfeinschliff</li>
         </ul>
       </article>
 
@@ -584,11 +572,11 @@
       <span class="pin-team__no">N° 01 / Mitgründer</span>
       <h3 class="pin-team__name">Mohamed<br/>Coulibaly</h3>
       <span class="pin-team__role">Technische Leitung · Head Coach</span>
-      <p>Treibende Kraft hinter der Academy. Spezialisiert auf Technik- und Taktikcoaching auf Amateur- und Profi-Level.</p>
+      <p>Spezialisiert auf Technik- und Taktikcoaching auf Amateur- und Profi-Level.</p>
       <ul>
-        <li>Einzeltraining</li>
-        <li>Premium Coaching</li>
-        <li>Taktik &amp; Spielsystem</li>
+        <li>Spielintelligenz</li>
+        <li>Technik</li>
+        <li>Spielsystem</li>
       </ul>
     </article>
 
@@ -601,12 +589,12 @@
     <article class="pin-team__block">
       <span class="pin-team__no">N° 02 / Mitgründer</span>
       <h3 class="pin-team__name">Gerald<br/>Tekwa</h3>
-      <span class="pin-team__role">Athletik &amp; Mental · Head Coach</span>
-      <p>Fokus auf Spielintelligenz, mentale Stärke und die Athletik moderner Profispieler. Methodik aus Top-Akademien.</p>
+      <span class="pin-team__role">Athletik &amp; Aufbau · Head Coach</span>
+      <p>Fokus auf Kondition, Ausdauer und körperlichen Aufbau. Methodik aus Top-Akademien.</p>
       <ul>
-        <li>Spielintelligenz</li>
-        <li>Mental &amp; Athletik</li>
-        <li>Premium Coaching</li>
+        <li>Kondition &amp; Ausdauer</li>
+        <li>Technik</li>
+        <li>Stärke &amp; Aufbau</li>
       </ul>
     </article>
 
@@ -769,8 +757,9 @@
       <div>
         <b>Social</b>
         <a href="https://www.instagram.com/evolutionfootball.academy" target="_blank" rel="noopener">Instagram</a>
-        <a href="#">Facebook</a>
-        <a href="#">TikTok</a>
+        <a href="https://www.facebook.com/evolutionfootball.academy" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.tiktok.com/@evolutionfootball.academy" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.youtube.com/@evolutionfootball.academy" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
   </div>
@@ -780,6 +769,6 @@
   </div>
 </footer>
 
-<script src="script.js?build=2026051322"></script>
+<script src="script.js?build=2026051903"></script>
 </body>
 </html>

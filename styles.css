@@ -2606,6 +2606,35 @@ body::before {
 .probe__chip-ico { font-size: 18px; }
 .probe__chips--big .probe__chip { padding: 14px 22px; font-size: 15px; }
 
+/* Feste Termin-Slots (Kindergruppe) — 2 grosse Karten untereinander */
+.probe__fixed-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.probe__fixed-slots[hidden] { display: none; }
+.probe__chip--slot {
+  justify-content: flex-start;
+  padding: 18px 24px !important;
+  font-size: 16px !important;
+  font-weight: 600;
+}
+.probe__chip--slot .probe__chip-ico { font-size: 22px; margin-right: 4px; }
+
+/* Hinweis-Box "wird von Akademie bestätigt" */
+.probe__note {
+  display: block;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(176, 133, 36, 0.1);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+.probe__note[hidden] { display: none; }
+
 .probe__dates {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
